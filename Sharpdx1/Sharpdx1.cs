@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
+using Device = SharpDX.DXGI.Device;
 
 namespace Sharpdx1
 {
@@ -20,6 +21,7 @@ namespace Sharpdx1
         private GraphicsDeviceManager graphicsDeviceManager;
         private SpriteBatch spriteBatch;
         private Form _form;
+
         SwapChain _swapChain;
         private KeyboardManager keyboard;
         private KeyboardState keyboardState;
@@ -31,11 +33,10 @@ namespace Sharpdx1
         {
             // Creates a graphics manager. This is mandatory.
             graphicsDeviceManager = new GraphicsDeviceManager(this);
- 
             // Setup the relative directory to the executable directory
             // for loading contents with the ContentManager
             Content.RootDirectory = "Content";
-
+            
             // Initialize input keyboard system
             keyboard = new KeyboardManager(this);
         }
@@ -43,8 +44,11 @@ namespace Sharpdx1
         protected override void Initialize()
         {
             // Modify the title of the window
-            Window.Title = "Sharpdx1";
+            Window.Title = "Sharpdx1";         
             GraphicsDevice.Clear(Color.Black);
+            Window.AllowUserResizing = true;
+            
+
             base.Initialize();
         }
 
@@ -72,23 +76,30 @@ namespace Sharpdx1
         {
             // Use time in seconds directly
             var time = (float)gameTime.TotalGameTime.TotalSeconds;
-
+           
           
             spriteBatch.Begin();
             
             // Display pressed keys
             var newState = keyboard.GetState();
             if (newState.IsKeyDown(Keys.C))
-            {
-                
-                GraphicsDevice.Clear(MathUtil.NextColor(random: new Random() ));
+            {         
+                GraphicsDevice.Clear(new Random().NextColor());
             }
             if (newState.IsKeyDown(Keys.Up))
             {
-               
-                //GraphicsPresenter.Resize(graphicsDeviceManager.PreferredBackBufferWidth+10,graphicsDeviceManager.PreferredBackBufferHeight,graphicsDeviceManager.PreferredBackBufferFormat);
+              
             }
-
+            if (newState.IsKeyDown(Keys.F4))
+            {
+                GraphicsDevice.Presenter.IsFullScreen = true;
+               
+            }
+            if (newState.IsKeyDown(Keys.F5))
+            {
+                GraphicsDevice.Presenter.IsFullScreen = false;
+                
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);
