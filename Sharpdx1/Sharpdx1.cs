@@ -23,6 +23,7 @@ namespace Sharpdx1
         private Form _form;
         int Width;
         int Height;
+        Color color= Color.Black;
         SwapChain _swapChain;
         private KeyboardManager keyboard;
         private KeyboardState keyboardState;
@@ -46,7 +47,7 @@ namespace Sharpdx1
         {
             // Modify the title of the window
             Window.Title = "Sharpdx1";         
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(color);
           //  Window.AllowUserResizing = true;
             Window.IsMouseVisible = true;
             Width = graphicsDeviceManager.PreferredBackBufferWidth;
@@ -58,7 +59,7 @@ namespace Sharpdx1
         {
             // Instantiate a SpriteBatch
             spriteBatch = ToDisposeContent(new SpriteBatch(GraphicsDevice));
-            
+           
             // Loads a sprite font
             // The [Arial16.xml] file is defined with the build action [ToolkitFont] in the project
             
@@ -68,14 +69,18 @@ namespace Sharpdx1
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
+           
 
             // Get the current state of the keyboard
+            
             keyboardState = keyboard.GetState();
+            GraphicsDevice.Clear(color);
+           
         }
 
         protected override void Draw(GameTime gameTime)
         {
+           
             // Use time in seconds directly
             var time = (float)gameTime.TotalGameTime.TotalSeconds;
            
@@ -85,10 +90,12 @@ namespace Sharpdx1
             // Display pressed keys
             var newState = keyboard.GetState();
             if (newState.IsKeyDown(Keys.C))
-            {         
-                GraphicsDevice.Clear(new Random().NextColor());
-              
+            {
+                color = new Random().NextColor();
+               GraphicsDevice.Clear(color);
+               
             }
+
             if (graphicsDeviceManager.IsFullScreen == false)
             {
             if (newState.IsKeyDown(Keys.Up))
@@ -144,6 +151,7 @@ namespace Sharpdx1
             spriteBatch.End();
 
             base.Draw(gameTime);
+            
         }
 
        /* public void Resize()
