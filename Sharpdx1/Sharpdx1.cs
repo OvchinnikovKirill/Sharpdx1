@@ -3,8 +3,10 @@ using System.Text;
 using System.Windows.Forms;
 using SharpDX;
 using SharpDX.Direct3D11;
+using SharpDX.Direct3D9;
 using SharpDX.DXGI;
 using Device = SharpDX.DXGI.Device;
+using SwapChain = SharpDX.DXGI.SwapChain;
 
 namespace Sharpdx1
 {
@@ -27,6 +29,8 @@ namespace Sharpdx1
         SwapChain _swapChain;
         private KeyboardManager keyboard;
         private KeyboardState keyboardState;
+        FrameStatistics FPS;
+        SpriteFont font;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sharpdx1" /> class.
@@ -38,7 +42,7 @@ namespace Sharpdx1
             // Setup the relative directory to the executable directory
             // for loading contents with the ContentManager
             Content.RootDirectory = "Content";
-            
+           
             // Initialize input keyboard system
             keyboard = new KeyboardManager(this);
         }
@@ -48,10 +52,12 @@ namespace Sharpdx1
             // Modify the title of the window
             Window.Title = "Sharpdx1";         
             GraphicsDevice.Clear(color);
+            
           //  Window.AllowUserResizing = true;
             Window.IsMouseVisible = true;
             Width = graphicsDeviceManager.PreferredBackBufferWidth;
             Height = graphicsDeviceManager.PreferredBackBufferHeight;
+           
             base.Initialize();
         }
 
@@ -62,7 +68,7 @@ namespace Sharpdx1
            
             // Loads a sprite font
             // The [Arial16.xml] file is defined with the build action [ToolkitFont] in the project
-            
+            font = Content.Load<SpriteFont>("Arial16");
             base.LoadContent();
         }
 
@@ -85,9 +91,8 @@ namespace Sharpdx1
             var time = (float)gameTime.TotalGameTime.TotalSeconds;
            
           
-            spriteBatch.Begin();
-            
-            // Display pressed keys
+           
+              // Display pressed keys
             var newState = keyboard.GetState();
             if (newState.IsKeyDown(Keys.C))
             {
@@ -95,32 +100,47 @@ namespace Sharpdx1
                GraphicsDevice.Clear(color);
                
             }
-
+            if (newState.IsKeyDown(Keys.D1))
+            {
+                graphicsDeviceManager.PreferredRefreshRate = new Rational(60, 1);
+              //  graphicsDeviceManager.ApplyChanges();
+                
+            }
+            if (newState.IsKeyDown(Keys.D2))
+            {
+                graphicsDeviceManager.PreferredRefreshRate = new Rational(80, 1);
+             //   graphicsDeviceManager.ApplyChanges();
+            }
+            if (newState.IsKeyDown(Keys.D3))
+            {
+                graphicsDeviceManager.PreferredRefreshRate = new Rational(60, 5);
+              //  graphicsDeviceManager.ApplyChanges();
+            }
             if (graphicsDeviceManager.IsFullScreen == false)
             {
             if (newState.IsKeyDown(Keys.Up))
             {
                 graphicsDeviceManager.PreferredBackBufferHeight -=10;
                 Height = graphicsDeviceManager.PreferredBackBufferHeight;
-                graphicsDeviceManager.ApplyChanges();
+               // graphicsDeviceManager.ApplyChanges();
             }
                 if (newState.IsKeyDown(Keys.Down))
                 {
                     graphicsDeviceManager.PreferredBackBufferHeight += 10;
                     Height = graphicsDeviceManager.PreferredBackBufferHeight;
-                    graphicsDeviceManager.ApplyChanges();
+              //      graphicsDeviceManager.ApplyChanges();
                 }
                 if (newState.IsKeyDown(Keys.Left))
                 {
                     graphicsDeviceManager.PreferredBackBufferWidth -= 10;
                     Width = graphicsDeviceManager.PreferredBackBufferWidth;
-                    graphicsDeviceManager.ApplyChanges();
+               //     graphicsDeviceManager.ApplyChanges();
                 }
                 if (newState.IsKeyDown(Keys.Right))
                 {
                     graphicsDeviceManager.PreferredBackBufferWidth += 10;
                     Width = graphicsDeviceManager.PreferredBackBufferWidth;
-                    graphicsDeviceManager.ApplyChanges();
+               //     graphicsDeviceManager.ApplyChanges();
                 }
             }
             if (newState.IsKeyDown(Keys.F4))
@@ -133,7 +153,7 @@ namespace Sharpdx1
                     graphicsDeviceManager.PreferredBackBufferHeight = 768;
                     graphicsDeviceManager.PreferredBackBufferWidth = 1366;
                     graphicsDeviceManager.IsFullScreen = true;
-                    graphicsDeviceManager.ApplyChanges();                
+                 //   graphicsDeviceManager.ApplyChanges();                
                 }
             }
             if (newState.IsKeyDown(Keys.F5))
@@ -145,9 +165,13 @@ namespace Sharpdx1
                     graphicsDeviceManager.PreferredBackBufferHeight = Height;
                     graphicsDeviceManager.PreferredBackBufferWidth = Width;
                     graphicsDeviceManager.IsFullScreen = false;
-                    graphicsDeviceManager.ApplyChanges();
+                 //   graphicsDeviceManager.ApplyChanges();
                 }            
             }
+            graphicsDeviceManager.ApplyChanges();
+            spriteBatch.Begin();
+            spriteBatch.DrawString(font, graphicsDeviceManager.PreferredRefreshRate.ToString(), new Vector2(0, 0), Color.White);
+          
             spriteBatch.End();
 
             base.Draw(gameTime);
