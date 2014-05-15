@@ -53,3 +53,4 @@ D:\Visual Studio\Projects\Sharpdx1\Sharpdx1\bin\Release\SharpDX.XInput.xml
 D:\Visual Studio\Projects\Sharpdx1\Sharpdx1\bin\Release\AssimpNet.xml
 D:\Visual Studio\Projects\Sharpdx1\Sharpdx1\obj\Release\Sharpdx1.exe
 D:\Visual Studio\Projects\Sharpdx1\Sharpdx1\obj\Release\Sharpdx1.pdb
+D:\Visual Studio\Projects\Sharpdx1\Sharpdx1\obj\Release\Sharpdx1.csprojResolveAssemblyReference.cache

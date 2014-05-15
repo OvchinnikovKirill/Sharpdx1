@@ -21,7 +21,8 @@ namespace Sharpdx1
         private GraphicsDeviceManager graphicsDeviceManager;
         private SpriteBatch spriteBatch;
         private Form _form;
-
+        int Width;
+        int Height;
         SwapChain _swapChain;
         private KeyboardManager keyboard;
         private KeyboardState keyboardState;
@@ -46,9 +47,10 @@ namespace Sharpdx1
             // Modify the title of the window
             Window.Title = "Sharpdx1";         
             GraphicsDevice.Clear(Color.Black);
-            Window.AllowUserResizing = true;
-            
-
+          //  Window.AllowUserResizing = true;
+            Window.IsMouseVisible = true;
+            Width = graphicsDeviceManager.PreferredBackBufferWidth;
+            Height = graphicsDeviceManager.PreferredBackBufferHeight;
             base.Initialize();
         }
 
@@ -85,20 +87,59 @@ namespace Sharpdx1
             if (newState.IsKeyDown(Keys.C))
             {         
                 GraphicsDevice.Clear(new Random().NextColor());
+              
             }
+            if (graphicsDeviceManager.IsFullScreen == false)
+            {
             if (newState.IsKeyDown(Keys.Up))
             {
-              
+                graphicsDeviceManager.PreferredBackBufferHeight -=10;
+                Height = graphicsDeviceManager.PreferredBackBufferHeight;
+                graphicsDeviceManager.ApplyChanges();
+            }
+                if (newState.IsKeyDown(Keys.Down))
+                {
+                    graphicsDeviceManager.PreferredBackBufferHeight += 10;
+                    Height = graphicsDeviceManager.PreferredBackBufferHeight;
+                    graphicsDeviceManager.ApplyChanges();
+                }
+                if (newState.IsKeyDown(Keys.Left))
+                {
+                    graphicsDeviceManager.PreferredBackBufferWidth -= 10;
+                    Width = graphicsDeviceManager.PreferredBackBufferWidth;
+                    graphicsDeviceManager.ApplyChanges();
+                }
+                if (newState.IsKeyDown(Keys.Right))
+                {
+                    graphicsDeviceManager.PreferredBackBufferWidth += 10;
+                    Width = graphicsDeviceManager.PreferredBackBufferWidth;
+                    graphicsDeviceManager.ApplyChanges();
+                }
             }
             if (newState.IsKeyDown(Keys.F4))
             {
-                GraphicsDevice.Presenter.IsFullScreen = true;
-               
+               // GraphicsDevice.Presenter.IsFullScreen = true;
+                //GraphicsDevice.Presenter.Resize(1366, 768, Format.B8G8R8A8_UNorm);
+                if (graphicsDeviceManager.IsFullScreen == false)
+                {
+                    
+                    graphicsDeviceManager.PreferredBackBufferHeight = 768;
+                    graphicsDeviceManager.PreferredBackBufferWidth = 1366;
+                    graphicsDeviceManager.IsFullScreen = true;
+                    graphicsDeviceManager.ApplyChanges();                
+                }
             }
             if (newState.IsKeyDown(Keys.F5))
             {
-                GraphicsDevice.Presenter.IsFullScreen = false;
-                
+                //GraphicsDevice.Presenter.IsFullScreen = false;
+                //GraphicsDevice.Presenter.Resize(500, 300, Format.B8G8R8A8_UNorm);
+                if (graphicsDeviceManager.IsFullScreen == true)
+                {
+                    graphicsDeviceManager.PreferredBackBufferHeight = Height;
+                    graphicsDeviceManager.PreferredBackBufferWidth = Width;
+                    graphicsDeviceManager.IsFullScreen = false;
+                    graphicsDeviceManager.ApplyChanges();
+                }            
             }
             spriteBatch.End();
 
